@@ -1,0 +1,119 @@
+#define image(IMAGE, WIDTH) {
+  widget(fader, {
+    filterConstraintY: true;
+    width: WIDTH;
+    plane: [0,1,0,1];
+    alphaFallOff: 1;
+    blurFallOff: 0.2;
+    widget(mirror, {
+      alpha: 0.6;
+      widget(stencil, {
+        source: "skin://graphics/stencil.png";
+        widget(image, {
+          $clone.ready = isReady();
+          source: IMAGE;
+          color: 0.75;
+          saturation: 1 - iir(isReady(), 10);
+        });
+
+        widget(container_y, {
+          space(1);
+          widget(throbber, {
+            alpha: iir(!$clone.ready, 8);
+          });
+          space(1);
+        });
+      });
+    });
+  });
+}
+
+#define textInput(PROPERTY, EVENT) {
+  widget(backdrop, {
+    .source = "skin://graphics/border-tiny.png";
+    .borderOnly = true;
+    .border = 4;
+    .color = 0.5;
+    BODY;
+  });
+}
+
+#define popupInputField(BODY) {
+  widget(backdrop, {
+    .source = "skin://graphics/border-tiny.png";
+    .borderOnly = true;
+    .border = 4;
+    .color = 0.5;
+    BODY;
+  });
+}
+
+#define popupButtonOK(EVENT, ENABLED, HIDDEN) {
+
+  widget(backdrop, {
+    source: "skin://graphics/border-tiny.png";
+    borderOnly: true;
+    border: 4;
+    padding: [0,0,$ui.size,0];
+    hidden: HIDDEN;
+    focusable: ENABLED;
+    onEvent(activate, EVENT);
+
+    alpha: select(isHovered() || isFocused(), 1, 0.5);
+
+    widget(container_x, {
+      align: center;
+      widget(icon, {
+source: "dataroot://resources/svg/Check.svg";
+      });
+      widget(label, {
+caption: _("OK");
+      });
+    });
+  });
+
+}
+
+
+#define LIST_Y_SLIDER(ID, FOCUSABLE=false) {
+
+  widget(slider_y, {
+
+    bind(ID);
+
+    .width = 24;
+    .focusable = 0.2 * canScroll();
+    .navFocusable = FOCUSABLE;
+
+    .alpha = iir(canScroll(), 16);
+    widget(container_x, {
+      padding: [0.2em,0,0.2em, 0];
+      widget(quad, {
+	     alpha: 0.6 + isHovered();
+      });
+    });
+  });
+}
+
+
+#define STAR_FULL() {
+  widget(icon, {
+    color: [1, 1, 0.2];
+    source: "dataroot://resources/svg/Star.svg";
+  });
+}
+
+#define STAR_DIMMED() {
+  widget(icon, {
+    color: [0.33, 0.33, 0];
+    shadow: true;
+    source: "dataroot://resources/svg/Star.svg";
+  });
+}
+
+#define TextStyleItem() {
+  //font: $ui.font;
+  font: "fonts/Segoe/segoeuil.ttf";
+  shadow: true;
+  outline: true;
+}

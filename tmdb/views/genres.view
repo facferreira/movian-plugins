@@ -1,0 +1,147 @@
+#import "common.view"
+
+widget(container_y, {
+	// Header
+	widget(loader, {
+		.source = "header.view";
+	});
+
+	widget(container_y, {
+		padding: $ui.size;
+
+		widget(array, {
+			// Lists
+			.childTilesX = 1;
+			.childTilesY = 2;
+			.Xspacing = $view.sizer;
+
+			widget(loader, {
+				.source = "itemviews/action.view";
+			});
+
+			widget(container_y, {
+			widget(label, {
+				.hidden = !($page.model.metadata.movies);
+				TextStyleItem();
+				.caption = "Movies";
+				//.size = 31;
+				.sizeScale = 2.1;
+				.color = 0.25 + 0.75 * isFocused();
+			});
+
+			widget(list_x, {
+				cloner($page.model.metadata.movies, container_z, {
+					&clone.focused = focusedChild();
+					$view.change = changed($clone.focused, 1);
+					.focusable = true;
+					.padding = $ui.size;
+					widget(fader, {
+				filterConstraintY: true;
+				weight: 1;
+				plane: [0,1,0,1];
+				alphaFallOff: 1;
+				blurFallOff: 0.2;
+				widget(mirror, {
+					alpha: 0.1;
+				widget(frontdrop, {
+source: "itemviews/img/boxart-overlay.png";
+automargin: true;
+childAspect: 0.7;
+border: 8;
+margin: -6;
+focusable: true;
+onEvent(activate, navOpen($self.url));
+color: iir(isFocused(), 4);
+
+			widget(container_z, {
+				widget(fader, {
+						filterConstraintY: true;
+						weight: 1;
+						plane: [0,1,0,1];
+						alphaFallOff: 1;
+						blurFallOff: 0.2;
+						widget(mirror, {
+							alpha: 0.6;
+							widget(stencil, {
+
+								source: "skin://graphics/stencil.png";
+								widget(image, {
+								width: $ui.size * 12;
+									height: $ui.size * 8;
+									$clone.ready = isLoading();
+									source: $self.image ?? "img/nophoto.png";
+									color: iir(isFocused(), 4) + 0.4;
+										saturation: 1 - iir(isLoading(), 10);
+								});
+
+								widget(container_y, {
+									space(1);
+									widget(throbber, {
+										alpha: iir(!$clone.ready, 8);
+									});
+									space(1);
+								});
+							});
+						});
+					});
+
+				widget(container_y, {
+					filterConstraintX: true;
+					space(6);
+
+					widget(container_z, {
+						widget(quad, {
+							color: 0;
+							alpha: 0.75;
+						});
+
+						widget(container_y, {
+							align: center;
+							padding: [$ui.size/2, 0];
+							widget(label, {
+								color: iir(isFocused(), 4) + 0.3;
+								caption: $self.title;
+								align: center;
+								shadow: true;
+								outline: true;
+								font: "theme://fonts/OpenSans-CondBold.ttf";
+							});
+						});
+					});
+
+					widget(container_z, {
+						.hidden = !($self.subtitle);
+
+						widget(quad, {
+							color: 0;
+							alpha: 0.65;
+						});
+
+						widget(container_y, {
+							align: center;
+							padding: [$ui.size/2, 0];
+							widget(label, {
+								color: iir(isFocused(), 4) + 0.3;
+								caption: $self.subtitle;
+								align: center;
+								shadow: true;
+								outline: true;
+								font: "theme://fonts/OpenSans-CondBold.ttf";
+							});
+						});
+					});
+				});
+				});
+				});
+				});
+				});
+
+					onEvent(activate, navOpen($self.url));
+				});
+			});
+			});
+
+			.width = $ui.width - $ui.width / 4 - $ui.width / 3;
+		});
+	});
+});

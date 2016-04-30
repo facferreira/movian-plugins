@@ -1,0 +1,45 @@
+#import "common.view"
+
+widget(container_y, {
+	padding: $ui.size;
+
+	widget(container_x, {
+		widget(label, {
+			caption: $self.model.metadata.title;
+			TextStyleItem();
+			.sizeScale = 3;
+		});
+	});
+
+	widget(container_x, {
+
+		cloner($self.model.metadata.ratings, container_x, {
+		homogenous: true;
+			widget(label, {
+				caption: $self.title + ":  ";
+				align: right;
+			});
+
+			widget(loader, {
+				source: "itemviews/kim_rating.view";
+				align: left;
+			});
+		});
+	});
+
+	widget(container_x, {
+		.padding = $ui.size;
+		widget(list_y, {
+			.id = "bodytext";
+
+			widget(label, {
+				TextStyleItem();
+				caption: $self.model.metadata.content;
+				maxlines: 50;
+				.sizeScale = 1.7;
+			});
+		});
+
+		LIST_Y_SLIDER("bodytext", true);
+	});
+});

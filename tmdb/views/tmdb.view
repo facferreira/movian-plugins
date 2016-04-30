@@ -1,0 +1,134 @@
+#import "common.view"
+
+widget(container_y, {
+	widget(container_y, {
+		padding: $ui.size;
+
+		widget(container_x, {
+			widget(image, {
+				source: "img/heart.png";
+				hidden: !($self.model.metadata.canFavorite);
+				width: $ui.height * 0.065;
+				color: iir($self.model.metadata.favorite, 4) + 0.3;
+			});
+
+			widget(image, {
+				source: "img/watchlist.png";
+				hidden: !($self.model.metadata.canWatchlist);
+				width: $ui.height * 0.065;
+				color: iir($self.model.metadata.watchlist, 4) + 0.3;;
+			});
+
+			widget(label, {
+				caption: $self.model.metadata.title;
+				TextStyleItem();
+				.sizeScale = 3;
+			});
+		});
+
+		widget(container_x, {
+			widget(container_y, {
+				padding: $ui.size * 1;
+
+				// poster cover
+				widget(container_z) {
+					height: $ui.size * 20;
+
+					widget(quad, {
+						fhpSpill: true;
+						additive: true;
+						alpha: 0.1 * isHovered() + 0.2 * iir(isNavFocused(), 4, true);
+					});
+
+					widget(image, {
+						margin: [0.5em, 0.5em];
+						source: $self.model.metadata.logo;
+					});
+				});
+
+				// Image cover
+				/*widget(fader, {
+					filterConstraintY: true;
+					width: $ui.height * 0.6;
+					plane: [0,1,0,1];
+					alphaFallOff: 1;
+					blurFallOff: 0.2;
+					widget(mirror, {
+						alpha: 0.6;
+						widget(stencil, {
+							source: "skin://graphics/stencil.png";*/
+							widget(image, {
+								$view.loading = iir(isLoading(), 4, true);
+								width: $ui.size * 12;
+								height: $ui.size * 8;
+								$clone.ready = $view.loading;
+								source: $page.model.metadata.logo;
+								color: 0.75;
+								saturation: $view.loading;
+							});
+
+							/*widget(container_y, {
+								space(1);
+								widget(throbber, {
+									alpha: iir(!$clone.ready, 8);
+								});
+								space(1);
+							});
+						});
+					});
+				});*/
+			});
+
+			widget(container_y, {
+				// Details
+				.hidden = !(count($self.model.nodes));
+				padding: $ui.size;
+				.width = $ui.width * 0.45;
+
+				widget(label, {
+					TextStyleItem();
+					.caption = "Details";
+					//.size = 31;
+					.sizeScale = 2.3;
+				});
+
+				spacing: $ui.size * 0.5;
+
+				cloner($self.model.nodes, loader, {
+					.hidden = ($self.type == "list");
+					source: "itemviews/" + $self.type + ".view";
+				});
+			});
+
+			widget(container_x, {
+				widget(container_y, {
+					// Lists
+					spacing: $ui.size * 0.5;
+
+					widget(array, {
+						.childTilesX = 1;
+						.childTilesY = 2;
+						.id = "array";
+
+						cloner($self.model.nodes, loader, {
+							.hidden = ($self.type != "list");
+							source: "itemviews/" + $self.type + ".view";
+						});
+
+						widget(loader, {
+							.source = "itemviews/action.view";
+						});
+					});
+
+					widget(dummy, { height: $ui.size; });
+
+					widget(label, {
+						.caption = "Currently selected: " + $clone.focused;
+					});
+
+					.width = $ui.width - $ui.width / 4 - $ui.width * 2/5;
+				});
+			});
+		});
+	});
+});

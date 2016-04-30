@@ -1,0 +1,42 @@
+#include "common.view"
+
+widget(container_y, {
+widget(frontdrop, {
+	source: "img/infobar.png";
+	.height = $ui.height * 1/15;
+	border: 4;
+
+	widget(container_x, {
+		widget(list_x, {
+			.spacing = 5;
+			$clone.focused = focusedChild();
+			$view.change = changed($clone.focused, 1);
+
+			cloner($self.model.actions, container_z, {
+				focusable: 0.5;
+				focusOnClick: true;
+				.hidden = ($self.data == $self.model.metadata.curPage);
+
+				widget(image, {
+					.source = $self.metadata.icon;
+					.color = 0.3 + isHovered() * 0.7 + isFocused() * 0.7 + isPressed() * 0.7;
+				});
+
+				onEvent(activate,
+					translate($self.type, void,
+						"pageevent", deliverEvent($page.eventSink, $self.data),
+						"navopen", navOpen($self.data)
+				));
+			});
+		});
+
+		widget(label, {
+			.caption = $clone.focused.metadata.title;
+		});
+
+		widget(dummy, {
+			.width = $ui.size * 0.5;
+		});
+	});
+});
+});

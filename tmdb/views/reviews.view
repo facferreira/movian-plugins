@@ -1,0 +1,56 @@
+#import "common.view"
+
+widget(container_y, {
+	widget(array, {
+		$view.sizer = int(getWidth() / 100);
+
+		&clone.focused = focusedChild();
+		.id = "array";
+		.border = $view.sizer * 3;
+		.Xspacing = $view.sizer;
+		.Yspacing = $view.sizer;
+		.childTilesX = 2;
+		.childTilesY = 4;
+
+		cloner($page.model.metadata.reviews, container_x, {
+			widget(image, {
+				width: $ui.size * 4;
+				height: $ui.size;
+				align: topLeft;
+				source: "img/boxart-overlay-blue.png";
+
+				widget(label, {
+					caption: $self.original_score ?? "N/A";
+					align: center;
+					TextStyleItem();
+					sizeScale: 1.7;				
+				});
+			});
+
+			widget(backdrop, {
+				source: "img/tile.png";
+
+				widget(container_y, {
+					widget(container_y, {
+				widget(label, {
+					caption: $self.quote;
+					maxlines: 5;
+					align: justified;
+					
+				});
+				});
+				widget(label, {
+					caption: $self.critic + ", " + $self.publication;
+					maxlines: 1;
+					align: justified;
+					sizeScale: 0.9;
+				});
+				});
+			});
+		});
+
+		widget(dummy, { .width = 2; });
+		LIST_Y_SLIDER("array");
+	widget(dummy, { .width = 2; });
+	});
+});

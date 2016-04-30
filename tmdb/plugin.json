@@ -1,0 +1,13 @@
+{
+	"author": "facanferff",
+	"title": "TMDb",
+	"synopsis": "themoviedb.org is a free and community maintained movie database.",
+	"description": "themoviedb.org is a free and community maintained movie database.",
+	"version": "1.3.7",
+	"file": "tmdb.js",
+	"showtimeVersion": "5.0",
+	"type": "ecmascript",
+	"id": "tmdb",
+	"icon": "logo.png",
+	"category": "other"
+}

@@ -1,0 +1,44 @@
+#import "common.view"
+
+widget(container_y, {
+	// Header
+	widget(loader, {
+		.source = "header.view";
+	});
+
+	widget(container_y, {
+		padding: $ui.size;
+
+		widget(container_x, {
+			widget(label, {
+				caption: $self.model.metadata.title;
+				TextStyleItem();
+				//size: 42;
+				.sizeScale = 3;
+			});
+		});
+
+		widget(container_y, {
+			widget(array, {
+			// Lists
+			.childTilesX = 1;
+			.childTilesY = 2;
+				// Lists
+			padding: $ui.size * 2;
+			spacing: $ui.size * 0.5;
+			cloner($self.model.nodes, loader, {
+				.hidden = ($self.type != "list");
+				source: "itemviews/" + $self.type + ".view";
+			});
+
+			widget(dummy, { height: $ui.size; });
+
+			widget(label, {
+				.caption = "Currently selected: " + $clone.focused;
+			});
+
+			.width = $ui.width - $ui.width / 4 - $ui.width / 3;
+			});
+		});
+	});
+});

@@ -1,0 +1,37 @@
+widget(container_y, {
+	.padding = $ui.size * 2;
+	.spacing = $ui.size;
+	widget(container_x, {
+		widget(label, {
+			caption: "User Authentication - Giving authorization to application";
+			.sizeScale = 2;
+		});
+	});
+
+	widget(container_y, {
+		widget(label, {
+			.caption = "In a web browser, go to: " + $self.model.metadata.url;
+		});
+
+		widget(label, {
+			.caption = "Move left and right to navigate between the steps.";
+		});
+	});
+
+	widget(list_x, {
+		cloner($self.model.metadata.screens, container_y, {
+			.focusable = true;
+			.width = $ui.width;
+			widget(image, {
+				.source = $self.image;
+			});
+
+			widget(label, {
+				.caption = $self.caption;
+				.align = center;
+			});
+
+			onEvent(activate, deliverEvent($self.eventSink, $self.event));
+		});
+	});
+});

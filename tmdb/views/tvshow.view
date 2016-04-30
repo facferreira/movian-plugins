@@ -1,0 +1,80 @@
+#import "common.view"
+
+widget(container_y, {
+	widget(container_y, {
+		padding: $ui.size;
+
+		widget(container_x, {
+			widget(label, {
+				caption: $page.model.metadata.title;
+				TextStyleItem();
+				.sizeScale = 3;
+			});
+		});
+
+		widget(container_x, {
+			widget(container_x, {
+				widget(container_y, {
+					padding: $ui.size;
+
+					image($page.model.metadata.logo, $ui.height * 0.6);
+				});
+			});
+
+			widget(container_y, {
+				widget(container_x, {
+					height: $ui.height / 2;
+
+					// TV Show Details
+					widget(container_y, {
+						.hidden = !(count($page.model.nodes));
+						padding: $ui.size;
+						.width = $ui.width * 0.35;
+
+						widget(label, {
+							TextStyleItem();
+							.caption = "Details";
+							//.size = 31;
+							.sizeScale = 2.3;
+						});
+					
+						spacing: $ui.size * 0.5;
+
+						cloner($page.model.nodes, loader, {
+							.hidden = ($self.type == "seasons_list" || $self.type == "bodytext");
+							source: "itemviews/" + $self.type + ".view";
+						});
+					});
+
+					// TV Show Overview
+					widget(container_y, {
+						padding: [0, $ui.size * 2, 0, 0];
+						.width = $ui.width - $ui.width / 4 - $ui.width * 2/5;
+
+						cloner($page.model.nodes, loader, {
+							.hidden = ($self.type != "bodytext");
+							source: "itemviews/" + $self.type + ".view";
+						});
+					});
+				});
+
+				widget(container_x, {
+					// Lists
+					spacing: $ui.size * 0.5;
+					height: $ui.height / 2;
+
+					widget(array, {
+						.childTilesX = 1;
+						.childTilesY = 1;
+						.id = "array";
+
+						cloner($page.model.nodes, loader, {
+							.hidden = ($self.type != "seasons_list");
+							source: "itemviews/" + $self.type + ".view";
+						});
+					});
+				});
+			});
+		});
+	});
+});

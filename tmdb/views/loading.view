@@ -1,0 +1,36 @@
+#import "common.view"
+
+widget(container_y, {
+	widget(dummy, {
+		height: $ui.size * 6;
+	});
+
+	widget(container_x, {
+		height: $ui.size * 15;
+
+		widget(container_z, {
+			widget(throbber, {
+				alpha: 1.0;
+			});
+
+			widget(label, {
+				//hidden: ($page.model.metadata.progress);
+				caption: $page.model.metadata.progress + "%";
+				TextStyleItem();
+				sizeScale: 2.5;
+				align: center;
+			});
+		});
+	});
+
+	widget(dummy, {
+		height: $ui.size * 3;
+	});
+
+	widget(label, {
+		caption: $page.model.metadata.message ?? "Loading...";
+		TextStyleItem();
+		sizeScale: 2.5;
+		align: center;
+	});
+});

@@ -1,0 +1,68 @@
+#import "common.view"
+
+	widget(container_y, {
+	// Top Bar
+	widget(loader, {
+		hidden: !count($page.model.actions);
+		.source = "header.view";
+	});
+
+	$page.glw.background = $clone.focused.metadata.background ?? $page.model.metadata.background/* ?? "img/background.png"*/;
+
+widget(container_y, {
+	padding: $ui.size * 2;
+
+	/*widget(dummy, {
+		height: $ui.height * 1/5;
+	});*/
+
+	widget(label, {
+		caption: $clone.focused.metadata.title;
+		TextStyleItem();
+		sizeScale: 3.1;
+	});
+
+	widget(label, {
+		hidden: !($clone.focused.metadata.description);
+		caption: $clone.focused.metadata.description;
+		TextStyleItem();
+		sizeScale: 1.4;
+		maxlines: 3;
+		height: $ui.size * 4;
+	})
+
+	widget(dummy, {
+		height: $ui.height * 1/10;
+	});
+
+	widget(coverflow, {
+		&clone.focused = focusedChild();
+
+		cloner($page.model.nodes, image, {
+			focusable: true;
+			source: "img/posterdiffuse.bmp";
+
+			widget(stencil, {
+				source: "skin://graphics/stencil2.png";
+				widget(frontdrop, {
+					$clone.ready = isReady();
+					source: $self.metadata.icon ?? "img/nophoto.png";
+					alpha: 0.7 + 0.2 * isFocused();
+
+					widget(container_y, {
+						space(1);
+						widget(throbber, {
+							alpha: iir(!$clone.ready, 8);
+						});
+						space(1);
+					});
+				});
+			});
+
+			onEvent(activate, select($ui.fancyAnimations,
+							navOpen($self.url, void, $self, $parent.model),
+							navOpen($self.url, void, void, $parent.model)));
+			});
+	});
+});
+});
