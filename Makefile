@@ -1,6 +1,5 @@
 
 PLUGINS= \
-	channel9.zip \
 	tmdb.zip
 
 %.zip:
